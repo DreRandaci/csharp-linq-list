@@ -4,7 +4,14 @@ using System.Linq;
 
 namespace linq
 {
-    // Build a collection of customers who are millionaires
+
+    // Define a bank
+    public class Bank
+    {
+        public string Symbol { get; set; }
+        public string Name { get; set; }
+    }
+    // Define a customer
     public class Customer
     {
         public string Name { get; set; }
@@ -192,6 +199,34 @@ namespace linq
             }
 
             Console.WriteLine();
+
+
+            /*
+                TASK:
+                As in the previous exercise, you're going to output the millionaires,
+                but you will also display the full name of the bank. You also need
+                to sort the millionaires' names, ascending by their LAST name.
+
+                Example output:
+                    Tina Fey at Citibank
+                    Joe Landy at Wells Fargo
+                    Sarah Ng at First Tennessee
+                    Les Paul at Wells Fargo
+                    Peg Vale at Bank of America
+            */
+
+            // Create some banks and store in a List
+            List<Bank> banks = new List<Bank>() {
+                new Bank(){ Name="First Tennessee", Symbol="FTB"},
+                new Bank(){ Name="Wells Fargo", Symbol="WF"},
+                new Bank(){ Name="Bank of America", Symbol="BOA"},
+                new Bank(){ Name="Citibank", Symbol="CITI"},
+            };
+
+            var q =
+                from b in banks
+                join c in customers on b.Symbol equals c.Bank
+                select new { Bank = b, c.Balance };
 
         }
     }
