@@ -17,6 +17,9 @@ namespace linq
         public string Name { get; set; }
         public double Balance { get; set; }
         public string Bank { get; set; }
+
+        public string[] splitName(Customer millionaire) => millionaire.Name.Split(' ');
+
     }
     class Program
     {
@@ -192,6 +195,7 @@ namespace linq
                                           Bank = millionaireGroup.Key,
                                           NumberOfMillionaires = millionaireGroup.Count()
                                       };
+
             Console.WriteLine("display how many millionaires per bank:");
             foreach (var item in groupedMillionaires)
             {
@@ -215,6 +219,13 @@ namespace linq
                     Peg Vale at Bank of America
             */
 
+            foreach (Customer person in millionaires)
+            {
+                Console.WriteLine("Millionaire: " + person.Name);
+            }
+
+            Console.WriteLine();
+
             // Create some banks and store in a List
             List<Bank> banks = new List<Bank>() {
                 new Bank(){ Name="First Tennessee", Symbol="FTB"},
@@ -223,10 +234,12 @@ namespace linq
                 new Bank(){ Name="Citibank", Symbol="CITI"},
             };
 
-            var q =
+            var joinedMillionaires =
                 from b in banks
-                join c in customers on b.Symbol equals c.Bank
-                select new { Bank = b, c.Balance };
+                join m in millionaires on b.Symbol equals m.Bank
+                select new { Bank = b, Name = m.Name.Split(' ') };
+
+            joinedMillionaires.OrderBy(n => n.Name[1]).ToList().ForEach(m => Console.WriteLine($"{m.Name[0]} {m.Name[1]} at {m.Bank.Name}"));            
 
         }
     }
